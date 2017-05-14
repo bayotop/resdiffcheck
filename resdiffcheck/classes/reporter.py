@@ -19,9 +19,10 @@ MACRO_PATTERN = "#diffcheck#."
 
 NO_ITEMS_TEMPLATE = """<li>No changes.</li>"""
 MENU_ITEM_TEMPLATE = """<li><a href="{0}id.html">{0}url</a></li>""".format(MACRO_PATTERN)
+LIST_ITEM_TEMPLATE = """<li><a href="{0}url">{0}url</a>&nbsp;<small>Last change: {0}last</span></small>""".format(MACRO_PATTERN)
 
 def getMacroName(name):
-    return "%s%s" % (MACRO_PATTERN, name)
+    return "{0}{1}".format(MACRO_PATTERN, name)
 
 class HtmlReport():
     def __init__(self, path, name):
@@ -57,6 +58,13 @@ class HtmlReport():
         
         with open(self.path + id + ".html", 'wb') as r:
            r.write(report.encode())
+
+    def add_urls(self, resources):
+        list = []   
+        for r in resources:
+            list.append(LIST_ITEM_TEMPLATE.replace(getMacroName("url"), r.url).replace(getMacroName("last"), r.date.split(" ")[0]))
+
+        self.__eval("list", "\n".join(list))
 
     def save(self):
         self.__eval("menu_item", "" if self.counter.count else NO_ITEMS_TEMPLATE)

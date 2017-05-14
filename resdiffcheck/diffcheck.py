@@ -19,6 +19,7 @@ def get_reports_path(path=None):
     return "{0}/{1}/{2}/".format(path, today.month, today.day) if path else "reports/{0}/{1}/".format(today.month, today.day)
 
 def check_differences(resources, report):
+    report.add_urls(resources)
     changed_resources = []
 
     for resource in resources:

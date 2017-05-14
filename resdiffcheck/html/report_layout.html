@@ -1,17 +1,31 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
     <title>Differences Summary from #diffcheck#.date</title>
+    <script src="http://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-	<div class="container-fluid text-left">
-		<h2>Changed resources <small>#diffcheck#.date</small></h2>
-		<ul>
-			#diffcheck#.menu_item
-		</ul>
-	</div>
+    <div class="container-fluid text-left">
+        <h2>Changed resources <small>#diffcheck#.date</small></h2>
+        <ul>
+            #diffcheck#.menu_item
+        </ul>
+        <p>
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapseUrls" aria-expanded="false" aria-controls="collapseUrls">
+                Show URLs in scope
+            </a>
+        </p>
+        <div class="collapse" id="collapseUrls">
+            <div class="card card-block">
+                <ul>
+                    #diffcheck#.list
+                </ul>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
