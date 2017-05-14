@@ -14,7 +14,7 @@ import unicodedata
 
 from helpers import Counter
 
-DEFAULT_TEMPLATE = "html/report_layout.html"
+DEFAULT_TEMPLATE = os.path.dirname(os.path.abspath(__file__)) + "/../html/report_layout.html"
 MACRO_PATTERN = "#diffcheck#."
 
 NO_ITEMS_TEMPLATE = """<li>No changes.</li>"""
