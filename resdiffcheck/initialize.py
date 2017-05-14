@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 
-""" Resource Difference Checker - Initialize
-    Version 0.0.1
-"""
-
+import argparse
 import logging
-import sys
 import os
+import sys
+import textwrap
 
 from classes.resource import Resource
 from classes.dbmanager import ResourceStorage
@@ -27,26 +25,30 @@ def process_resource(url, storage, counter=None):
             counter.increment()
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2 and len(sys.argv) != 3:
-        print("Usage: %s <url_list> [output_db_path]" % sys.argv[0])
-        sys.exit()
-    if sys.argv.count == 3:
-        output = sys.argv[2]
-        urls = sys.argv[1]
-    else:
-        output = "data/resources.db"
-        urls = sys.argv[1]
+    parser = argparse.ArgumentParser(
+        prog="initialize.py",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent("""\
+            Resource Difference Checker - Initialize
+            
+            See https://github.com/bayotop/resdiffcheck for more information.
+            """))
 
-    logging.basicConfig(filename='process.log',level=logging.DEBUG)
+    parser.add_argument("urls", help="file containing a list of URLs to resources")
+    parser.add_argument("output_db", help="name of output DB with processed urls")
+    parser.add_argument("-l", "--logfile", default="process.log",  help="default ./process.log")
+    args = parser.parse_args()
+
+    logging.basicConfig(filename=args.logfile,level=logging.DEBUG)
         
-    with open(urls) as f:
+    with open(args.urls) as f:
        content = f.readlines()
 
-    if os.path.exists(output):
-        if helpers.get_user_input("The file '%s' already exists. Overwrite?" % output) and helpers.get_user_input("The original file will be gone. Are you sure?"):
-            os.remove(output)
+    if os.path.exists(args.output_db):
+        if helpers.get_user_input("The file '%s' already exists. Overwrite?" % args.output_db) and helpers.get_user_input("The original file will be gone. Are you sure?"):
+            os.remove(args.output_db)
 
-    storage = ResourceStorage(output)
+    storage = ResourceStorage(args.output_db)
     if not storage.create():
         sys.exit()
 

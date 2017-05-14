@@ -1,17 +1,18 @@
 # Resource Difference Checker
 
-The idea is to track updates made to resource avaialable on the web. Expected are JS files or whole HTML pages as jsbeautifier (https://github.com/beautify-web/js-beautify) is run on the compared contents. Resources are stored in a sqlite3 db (by ```default at data/resources.db```). A report is saved by default at ```reports/{month}/{day}/diff.html```. 
+The idea is to track updates made to resource avaialable on the web. Expected are JS files or whole HTML pages as jsbeautifier (https://github.com/beautify-web/js-beautify) is run on the compared contents. Resources are stored in a sqlite3 DB. A HTML report is generated for all processed URLs.
 
 # Usage
 
 The are two important python scripts ```initialize.py``` and ```diffcheck.py```. The first takes a list of domains (see example ```resources.txt```) and creates a initial DB. The latter mentioned is ment to be scheduled to run once a day and works with a DB created by ```initialize.py```.
 
 ```
-Usage: initialize.py <url_list> [output_db_path]
-Usage: diffcheck.py [db_path] [reports_path]
+usage: initialize.py [-h] [-l LOGFILE] urls output_db
+usage: diffcheck.py [-h] [-l LOGFILE] db report_dir
 ```
 
-```cat resources.txt
+```
+$ cat resources.txt
 # Comments are ignored
 http://example.com/scripts/x.js
 https://example.com/page.html

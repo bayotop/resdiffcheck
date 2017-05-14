@@ -1,22 +1,20 @@
 #!/usr/bin/env python
 
-""" Resource Difference Checker
-    Version 0.0.1 
-"""
-
+import argparse
+from datetime import date
 import hashlib
 import logging
 import sys
-from datetime import date
+import textwrap
 
 from classes.resource import Resource
 from classes.dbmanager import ResourceStorage
 from classes.reporter import HtmlReport
 import helpers
 
-def get_reports_path(path=None):
+def get_reports_path(path):
     today = date.today()
-    return "{0}/{1}/{2}/".format(path, today.month, today.day) if path else "reports/{0}/{1}/".format(today.month, today.day)
+    return "{0}/{1}/{2}/".format(path, today.month, today.day)
 
 def check_differences(resources, report):
     report.add_urls(resources)
@@ -35,20 +33,28 @@ def check_differences(resources, report):
     return changed_resources
 
 if __name__ == "__main__":
-    if len(sys.argv) != 1 and len(sys.argv) != 2 and len(sys.argv) != 3:
-        print("Usage: %s [db_path] [reports_path]" % sys.argv[0])
-        sys.exit()
+    parser = argparse.ArgumentParser(
+        prog="diffcheck.py",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent("""\
+            Resource Difference Checker
+            
+            See https://github.com/bayotop/resdiffcheck for more information.
+            """))
 
-    logging.basicConfig(filename='process.log',level=logging.DEBUG)
+    parser.add_argument("db", help="database with resources to check")
+    parser.add_argument("report_dir", help="target directory for reports (without trailing /)")
+    parser.add_argument("-l", "--logfile", default="process.log",  help="default ./process.log")
+    args = parser.parse_args()
 
-    db = sys.argv[1] if len(sys.argv) >= 2 else "data/resources.db"
-    reports_path = get_reports_path(sys.argv[2]) if len(sys.argv) == 3 else get_reports_path()
+    logging.basicConfig(filename=args.logfile,level=logging.DEBUG)
 
-    storage = ResourceStorage(db)
+
+    storage = ResourceStorage(args.db)
     if not storage.load():
         sys.exit()
 
-    report = HtmlReport(reports_path, "diff.html")
+    report = HtmlReport(get_reports_path(args.report_dir), "diff.html")
 
     changed_resources = check_differences(storage.getall(), report)
 
